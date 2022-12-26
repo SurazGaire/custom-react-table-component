@@ -1,0 +1,51 @@
+table {
+    color: black;
+    background-color: white;
+    border-color: black;
+    border: 1px solid;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    overflow: auto;
+    width: 100%;
+}
+
+table thead th {
+    color: black;
+    background-color: aliceblue;
+    border-color: #474242;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 15px 10px;
+    vertical-align: bottom;
+    text-align: left;
+    border: 1px solid gray;
+}
+
+
+
+table tbody td {
+    border: 1px solid #D3D3D3;
+    padding: 15px 10px;
+    vertical-align: top;
+}
+table tbody td:first-child {
+    border-left: 0px;
+}
+
+table tbody tr{
+    &:hover{
+        background-color: aliceblue;
+        cursor: pointer;
+    }
+
+}
+table tbody tr td input[type="checkbox"]{
+height: 15px;
+width: 15px;
+border-radius: 10px;
+}
+
+table tbody tr td input:checked {
+    background-color: #474242;
+}
