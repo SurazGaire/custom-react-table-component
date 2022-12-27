@@ -1,8 +1,12 @@
+//Color Codes
+$primary-color: #000000;
+$secondary-color: #ffffff;
+$tertiary-color: #D3D3D3;
 
 table {
-    color: black;
-    background-color: white;
-    border-color: black;
+    color: $primary-color;
+    background-color:$secondary-color;
+    border-color: $primary-color;
     border: 1px solid;
     border-collapse: collapse;
     border-spacing: 0;
@@ -12,20 +16,20 @@ table {
 }
 
 table thead th {
-    color: black;
+    color: $primary-color;
     background-color: aliceblue;
-    border-color: #474242;
+    border-color:$primary-color;
     font-weight: bold;
     font-size: 0.9em;
     padding: 15px 10px;
     vertical-align: bottom;
     text-align: left;
-    border: 1px solid gray;
+    border: 1px solid $tertiary-color;
     text-transform: uppercase;
 }
 
 table tbody td {
-    border: 1px solid #D3D3D3;
+    border: 1px solid $tertiary-color;
     padding: 15px 10px;
     vertical-align: top;
 }
