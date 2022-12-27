@@ -1,5 +1,5 @@
 import "./App.scss";
-import CustomTable from "./components/CustomTable";
+import CustomTable from "./components/Table/CustomTable";
 
 function App() {
   return (

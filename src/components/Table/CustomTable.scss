@@ -1,3 +1,4 @@
+
 table {
     color: black;
     background-color: white;
@@ -20,9 +21,8 @@ table thead th {
     vertical-align: bottom;
     text-align: left;
     border: 1px solid gray;
+    text-transform: uppercase;
 }
-
-
 
 table tbody td {
     border: 1px solid #D3D3D3;
@@ -30,8 +30,11 @@ table tbody td {
     vertical-align: top;
 }
 table tbody td:first-child {
-    border-left: 0px;
+    .facopy{
+        display: none;
+    }
 }
+
 
 table tbody tr{
     &:hover{
@@ -48,4 +51,12 @@ border-radius: 10px;
 
 table tbody tr td input:checked {
     background-color: #474242;
+}
+
+//fa icon
+.fasort{
+    font-size: 15px;
+}
+.facopy{
+    font-size: 15px;
 }
