@@ -4,3 +4,4 @@ export { default as TableFooter } from "./TableFooter";
 export { default as TBody } from "./TBody";
 export { default as Column } from "./Column";
 export { default as Pagination } from "./Pagination";
+export { default as Header } from "./Header";

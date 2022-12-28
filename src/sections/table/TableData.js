@@ -8,6 +8,7 @@ const TableData = ({
   showCopyIcon,
   displayCopy,
   copyText,
+  handleDelete,
 }) => {
   return (
     <>
@@ -18,8 +19,8 @@ const TableData = ({
             onMouseOver={() => {
               showCopyIcon({ row: data.id, col: column.id });
             }}
-            onMouseLeave={() => {
-              showCopyIcon({ row: data.id, col: column.id });
+            onMouseOut={() => {
+              showCopyIcon({ row: null, col: null });
             }}
           >
             <div className="d-flex justify-content-space-between">
@@ -34,7 +35,7 @@ const TableData = ({
               <div>{data[column?.field]}</div>
               <div>
                 {column.field === "delete" ? (
-                  <FaTrashAlt />
+                  <FaTrashAlt onClick={() => handleDelete(data.id)} />
                 ) : column.field !== "id" &&
                   displayCopy.row === data.id &&
                   displayCopy.col === column.id ? (

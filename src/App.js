@@ -4,7 +4,9 @@ import CustomTable from "./components/Table/CustomTable";
 function App() {
   return (
     <>
-      <CustomTable />
+      <div className="wrapper">
+        <CustomTable />
+      </div>
     </>
   );
 }

@@ -1,13 +1,12 @@
 //Color Codes
-$primary-color: #000000;
+$primary-color: #005B96;
 $secondary-color: #ffffff;
-$tertiary-color: #D3D3D3;
-
+$text-color: #000000;
+$tertiary-color: #ffe5b4;
 table {
-    color: $primary-color;
+    color: $text-color;
     background-color:$secondary-color;
-    border-color: $primary-color;
-    border: 1px solid;
+    border: 1px solid $primary-color;
     border-collapse: collapse;
     border-spacing: 0;
     display: table;
@@ -15,9 +14,14 @@ table {
     width: 100%;
 }
 
+.table-top{
+    padding: 10px 10px;
+    font-size: 1rem;
+}
+
 table thead th {
-    color: $primary-color;
-    background-color: aliceblue;
+    color: $secondary-color;
+    background-color: $primary-color;
     border-color:$primary-color;
     font-weight: bold;
     font-size: 0.9em;
@@ -30,20 +34,25 @@ table thead th {
 
 table tbody td {
     border: 1px solid $tertiary-color;
-    padding: 15px 10px;
+    padding: 15px 8px;
     vertical-align: top;
+     
 }
+
 table tbody td:first-child {
     .facopy{
         display: none;
     }
 }
-
+table tbody tr:nth-child(2n+1) {
+    background-color: aliceblue;
+}
 
 table tbody tr{
     &:hover{
-        background-color: aliceblue;
+        background-color: $tertiary-color;
         cursor: pointer;
+        color: $text-color;
     }
 
 }
@@ -64,3 +73,35 @@ table tbody tr td input:checked {
 .facopy{
     font-size: 15px;
 }
+.fasearch{
+    font-size: 15px;
+    margin-right: 5px;
+    color: $primary-color;
+}
+.table-top
+{
+input[type='text'] {
+    color:$text-color;
+    border-color: $primary-color;
+    border-radius: 0.2rem;
+    background-color: rgb(255, 255, 255);
+    padding: 8px 0px;
+    font-size: 1rem;
+    border:2px solid $primary-color;
+    &:focus{
+        border: 2px solid $primary-color;
+    }
+}
+}
+
+
+//Pagination
+.pagination{
+    margin-top: 20px;
+}
+
+.pagination button.active {
+    background-color: $primary-color;   
+    color: white;
+}
+

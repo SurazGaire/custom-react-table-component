@@ -8,10 +8,12 @@ const Tbody = ({
   showCopyIcon,
   displayCopy,
   copyText,
+  handleDelete,
+  rowsToDisplay,
 }) => {
   return (
     <tbody>
-      {tableData?.map((data, index) => {
+      {rowsToDisplay?.map((data, index) => {
         return (
           <TableData
             key={index}
@@ -21,6 +23,7 @@ const Tbody = ({
             showCopyIcon={showCopyIcon}
             displayCopy={displayCopy}
             copyText={copyText}
+            handleDelete={handleDelete}
           />
         );
       })}

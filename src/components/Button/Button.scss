@@ -1,0 +1,48 @@
+//Color Codes
+$primary-color: #4CAF50;
+$secondary-color: #ffffff;
+$text-color: #000000;
+$tertiary-color: #D3D3D3;
+// Button
+.primary-button {
+    padding: 0.8rem 1rem;
+    background-color: $tertiary-color;
+    color: $text-color;
+    border: 1px solid $text-color;
+    text-decoration: none;
+    font-size: 1rem;
+
+    &:disabled {
+        opacity: 0.4;
+        color: $tertiary-color;
+        background-color: #968c8c;
+    }
+}
+
+.primary-button a {
+    padding-left: 19px;
+    padding-right: 19px;
+    border: 1px solid $tertiary-color;
+    border-radius: 5px;
+
+}
+
+.secondary-button {
+    padding: 0.8rem 1.5rem;;
+    border: 1px solid $text-color;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.disabled-button {
+    background-color: $tertiary-color;
+    padding: 10px 19px;
+    border: 1px solid $secondary-color;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+
+}
