@@ -361,6 +361,7 @@ const CustomTable = () => {
   const changeSearchValue = (e) => {
     const searchChar = e.target.value;
     setSearchValue(e.target.value);
+    console.log(searchChar);
     const filteredData = tableData.filter((data) => {
       for (let key in data) {
         if (
@@ -376,10 +377,10 @@ const CustomTable = () => {
       : setIsFooterNeeded(false);
 
     if (searchChar === "") {
-      setTableData(getSlicedData());
+      setRowsToDisplay(getSlicedData());
       setIsFooterNeeded(false);
     } else {
-      setTableData(filteredData);
+      setRowsToDisplay(filteredData);
     }
   };
 
@@ -389,17 +390,13 @@ const CustomTable = () => {
   }, []);
 
   const getSlicedData = () => {
-    console.log(tableData);
     const lastPostIndex = currentPage * rowPerPage;
     const firstPostIndex = lastPostIndex - rowPerPage;
     let slicedData = tableData.slice(firstPostIndex, lastPostIndex);
-    console.log(slicedData, "sliced");
     return slicedData;
   };
-  console.log("out use");
 
   useEffect(() => {
-    console.log("in use");
     setRowsToDisplay(getSlicedData());
   }, [currentPage, tableData]);
 
@@ -437,7 +434,6 @@ const CustomTable = () => {
         : order === "desc"
         ? [...tableData]?.sort((a, b) => (a[column] < b[column] ? 1 : -1))
         : rowsToDisplay;
-    console.log(sortedData);
     setSort(sortObj);
     setTableData(sortedData);
   };
