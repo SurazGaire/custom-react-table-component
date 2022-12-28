@@ -71,12 +71,16 @@ table tbody tr td input:checked {
     font-size: 15px;
 }
 .facopy{
-    font-size: 15px;
+    font-size: 20px;
 }
 .fasearch{
     font-size: 15px;
     margin-right: 5px;
     color: $primary-color;
+}
+.table-title{
+    color: $primary-color;
+    font-size: 1.5rem;
 }
 .table-top
 {
@@ -91,17 +95,70 @@ input[type='text'] {
     &:focus{
         border: 2px solid $primary-color;
     }
+    &::placeholder{
+        padding-left: 5px;
+    }
 }
 }
 
 
 //Pagination
 .pagination{
-    margin-top: 20px;
+    position: fixed;
+    bottom: 8%;
+    right: 8%;
 }
 
 .pagination button.active {
     background-color: $primary-color;   
     color: white;
+    border:1px solid $primary-color;
 }
 
+#opacity-light{
+    opacity: 0.2;
+}
+// Button
+.primary-button {
+    padding: 0.8rem 1rem;
+    // background-color: #D3D3D3;
+    background-color: $primary-color;   
+    color: $secondary-color;
+    border: 1px solid $primary-color;
+    text-decoration: none;
+    font-size: 1rem;
+
+    &:disabled {
+        opacity: 0.4;
+        color: $tertiary-color;
+        background-color: #968c8c;
+    }
+}
+
+.primary-button a {
+    padding-left: 19px;
+    padding-right: 19px;
+    border: 1px solid $tertiary-color;
+    border-radius: 5px;
+
+}
+
+.secondary-button {
+    padding: 0.8rem 1.5rem;
+    border: 1px solid $primary-color;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.disabled-button {
+    background-color: $tertiary-color;
+    padding: 10px 19px;
+    border: 1px solid $secondary-color;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+
+}

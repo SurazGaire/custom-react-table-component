@@ -1,34 +1,352 @@
-import React, { useEffect, useState } from "react";
-import "./CustomTable.scss";
-
+import React, { useEffect, useMemo, useState } from "react";
 import {
-  Header,
-  Pagination,
-  TableFooter,
-  TableHead,
-  TBody,
-} from "../../sections/table";
+  FaSort,
+  FaSortDown,
+  FaSortUp,
+  FaCopy,
+  FaTrashAlt,
+  FaSearch,
+} from "react-icons/fa";
+import "./CustomTable.scss";
+import { data, columnData } from "../../data";
 
-import { data } from "../../data";
+const TableFooter = ({ columns }) => {
+  return (
+    <thead>
+      <tr>
+        {columns?.map((column, index) => {
+          return <FooterColumn key={index} column={column.header} />;
+        })}
+      </tr>
+    </thead>
+  );
+};
 
-const columnData = [
-  { id: 1, field: "id", header: "ID" },
-  { id: 2, field: "first_name", header: "First Name" },
-  { id: 3, field: "last_name", header: "Last Name" },
-  { id: 4, field: "email", header: "Email" },
-  { id: 5, field: "gender", header: "Gender" },
-  { id: 6, field: "address", header: "Address" },
-  { id: 7, field: "phone", header: "Phone No" },
-  { id: 9, field: "date_of_birth", header: "DOB" },
-  { id: 10, field: "delete", header: "" },
-];
+const Header = ({ changeSearchValue, searchValue }) => {
+  return (
+    <>
+      <div className="table-top d-flex justify-content-space-between">
+        <div className="table-title">Users</div>
+        <div>
+          <FaSearch className="fasearch" />
+          <input
+            type="text"
+            name="search"
+            onChange={changeSearchValue}
+            value={searchValue}
+            placeholder="Search"
+          ></input>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const FooterColumn = ({ column }) => {
+  return (
+    <th>
+      <div className="d-flex justify-content-space-between">
+        <div>{column}</div>
+      </div>
+    </th>
+  );
+};
+
+const Column = ({
+  column,
+  handleSelectRow,
+  isAllChecked,
+  sort,
+  columnKey,
+  sortTable,
+}) => {
+  const isDescSort = sort?.column === columnKey && sort.order === "desc";
+  const isAscSort = sort?.column === columnKey && sort.order === "asc";
+
+  const sortingOrder = isDescSort ? "asc" : "desc";
+
+  return (
+    <th>
+      <div className="d-flex justify-content-space-between">
+        {columnKey === "id" ? (
+          <input
+            type="checkbox"
+            onChange={handleSelectRow}
+            name="selectAll"
+            checked={isAllChecked}
+          ></input>
+        ) : null}
+        <div>{column}</div>
+        {columnKey !== "delete" ? (
+          <div className="d-flex justify-content-center">
+            {isDescSort ? (
+              <FaSortDown
+                className="fasort"
+                onClick={() => {
+                  sortTable({ column: columnKey, order: sortingOrder });
+                }}
+              />
+            ) : isAscSort ? (
+              <FaSortUp
+                className="fasort"
+                onClick={() => {
+                  sortTable({ column: columnKey, order: sortingOrder });
+                }}
+              />
+            ) : (
+              <FaSort
+                className="faSort"
+                onClick={() => {
+                  sortTable({ column: columnKey, order: sortingOrder });
+                }}
+              />
+            )}
+          </div>
+        ) : null}
+      </div>
+    </th>
+  );
+};
+
+const TableData = ({
+  data,
+  columns,
+  handleSelectRow,
+  showCopyIcon,
+  displayCopy,
+  copyText,
+  handleDelete,
+  isClicked,
+}) => {
+  return (
+    <>
+      <tr>
+        {columns?.map((column, index) => (
+          <td
+            key={index}
+            onMouseOver={() => {
+              showCopyIcon({ row: data.id, col: column.id });
+            }}
+            onMouseOut={() => {
+              showCopyIcon({ row: null, col: null });
+            }}
+          >
+            {column.field !== "delete" ? (
+              <div className="d-flex justify-content-space-between">
+                {column.field === "id" ? (
+                  <input
+                    type="checkbox"
+                    onChange={handleSelectRow}
+                    name={data[column?.field]}
+                    checked={data?.isChecked || false}
+                  ></input>
+                ) : null}
+                <div>{data[column?.field]}</div>
+                <div>
+                  {column.field === "delete" ? (
+                    <FaTrashAlt onClick={() => handleDelete(data.id)} />
+                  ) : column.field !== "id" &&
+                    displayCopy.row === data.id &&
+                    displayCopy.col === column.id ? (
+                    <div>
+                      <FaCopy
+                        onClick={() => {
+                          copyText(data[column?.field], {
+                            row: data.id,
+                            col: column.id,
+                          });
+                        }}
+                        className={
+                          displayCopy.display === "none"
+                            ? "d-none"
+                            : "d-block facopy"
+                        }
+                        id={
+                          isClicked === true &&
+                          displayCopy.row === data.id &&
+                          displayCopy.col === column.id
+                            ? "opacity-light"
+                            : null
+                        }
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            ) : (
+              <div className="d-flex justify-content-center">
+                {column.field === "id" ? (
+                  <input
+                    type="checkbox"
+                    onChange={handleSelectRow}
+                    name={data[column?.field]}
+                    checked={data?.isChecked || false}
+                  ></input>
+                ) : null}
+                <div>{data[column?.field]}</div>
+                <div>
+                  {column.field === "delete" ? (
+                    <FaTrashAlt onClick={() => handleDelete(data.id)} />
+                  ) : column.field !== "id" &&
+                    displayCopy.row === data.id &&
+                    displayCopy.col === column.id ? (
+                    <div>
+                      <FaCopy
+                        onClick={() => {
+                          copyText(data[column?.field]);
+                        }}
+                        className={
+                          displayCopy.display === "none" ? "d-none" : "d-block"
+                        }
+                        id={isClicked === true ? "opacity-light" : null}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            )}
+          </td>
+        ))}
+      </tr>
+    </>
+  );
+};
+
+const TableHead = ({
+  columns,
+  handleSelectRow,
+  isAllChecked,
+  sort,
+  sortTable,
+}) => {
+  return (
+    <thead>
+      <tr>
+        {columns?.map((column, index) => {
+          return (
+            <Column
+              key={index}
+              column={column.header}
+              columnKey={column.field}
+              handleSelectRow={handleSelectRow}
+              isAllChecked={isAllChecked}
+              sort={sort}
+              sortTable={sortTable}
+            />
+          );
+        })}
+      </tr>
+    </thead>
+  );
+};
+
+const TBody = ({
+  columns,
+  handleSelectRow,
+  showCopyIcon,
+  displayCopy,
+  copyText,
+  handleDelete,
+  rowsToDisplay,
+  isClicked,
+}) => {
+  return (
+    <tbody>
+      {rowsToDisplay?.map((data, index) => {
+        return (
+          <TableData
+            key={index}
+            data={data}
+            columns={columns}
+            handleSelectRow={handleSelectRow}
+            showCopyIcon={showCopyIcon}
+            displayCopy={displayCopy}
+            copyText={copyText}
+            handleDelete={handleDelete}
+            isClicked={isClicked}
+          />
+        );
+      })}
+    </tbody>
+  );
+};
+
+const PrimaryButton = ({ label, handleClick, disabled }) => {
+  return (
+    <div>
+      <button
+        onClick={handleClick}
+        className="primary-button"
+        disabled={disabled}
+      >
+        {label}
+      </button>
+    </div>
+  );
+};
+const SecondaryButton = ({ page, setCurrentPage, currentPage }) => {
+  return (
+    <div>
+      <button
+        className={
+          currentPage === page ? "secondary-button active" : "secondary-button"
+        }
+        onClick={() => {
+          setCurrentPage(page);
+        }}
+      >
+        {page}
+      </button>
+    </div>
+  );
+};
+
+const Pagination = ({
+  rowPerPage,
+  tableRows,
+  setCurrentPage,
+  currentPage,
+  handlePrevClick,
+  handleNextClick,
+}) => {
+  let pages = [];
+  for (let i = 1; i <= Math.ceil(tableRows / rowPerPage); i++) {
+    pages.push(i);
+  }
+
+  return (
+    <>
+      <div className="pagination d-flex justify-content-flex-end">
+        <PrimaryButton
+          label="Previous"
+          handleClick={handlePrevClick}
+          disabled={currentPage <= 1}
+        />
+
+        {pages.map((page, index) => (
+          <SecondaryButton
+            key={index}
+            page={page}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+        ))}
+        <PrimaryButton
+          label="Next"
+          handleClick={handleNextClick}
+          disabled={currentPage >= Math.ceil(tableRows / rowPerPage)}
+        />
+      </div>
+    </>
+  );
+};
+
 const CustomTable = () => {
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState(data);
   const [columns, setColumns] = useState([]);
   const [displayCopy, setDisplayCopy] = useState({
     row: null,
     col: null,
-    show: true,
   });
   const [sort, setSort] = useState({ column: "", order: "" });
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -37,23 +355,32 @@ const CustomTable = () => {
   const [disabled, setDisabled] = useState(false);
   const [rowsToDisplay, setRowsToDisplay] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
+  const [isFooterNeeded, setIsFooterNeeded] = useState(false);
 
   const changeSearchValue = (e) => {
-    e.preventDefault();
-    let filteredData = rowsToDisplay.filter(
-      (data) =>
-        console.log(data.first_name.toLowerCase().includes(e.target.value)) ||
-        data.last_name.toLowerCase().includes(e.target.value) ||
-        data.email.toLowerCase().includes(e.target.value) ||
-        data.gender.toLowerCase().includes(e.target.value) ||
-        data.address.includes(e.target.value) ||
-        data.phone.includes(e.target.value)
-    );
-    console.log(filteredData);
-    const filterDisplay =
-      filteredData.length >= 1 ? filteredData : rowsToDisplay;
-    setRowsToDisplay(filterDisplay);
+    const searchChar = e.target.value;
     setSearchValue(e.target.value);
+    const filteredData = tableData.filter((data) => {
+      for (let key in data) {
+        if (
+          key !== "id" &&
+          data[key].toLowerCase().includes(searchChar.toLowerCase())
+        ) {
+          return true;
+        }
+      }
+    });
+    filteredData.length > rowPerPage
+      ? setIsFooterNeeded(true)
+      : setIsFooterNeeded(false);
+
+    if (searchChar === "") {
+      setRowsToDisplay(getSlicedData());
+      setIsFooterNeeded(false);
+    } else {
+      setRowsToDisplay(filteredData);
+    }
   };
 
   useEffect(() => {
@@ -61,15 +388,23 @@ const CustomTable = () => {
     setColumns(columnData);
   }, []);
 
-  useEffect(() => {
+  const getSlicedData = () => {
     const lastPostIndex = currentPage * rowPerPage;
     const firstPostIndex = lastPostIndex - rowPerPage;
-    console.log(firstPostIndex);
-    setRowsToDisplay(data.slice(firstPostIndex, lastPostIndex));
+    let slicedData = tableData.slice(firstPostIndex, lastPostIndex);
+    return slicedData;
+  };
+  useEffect(() => {
+    setRowsToDisplay(getSlicedData());
   }, [currentPage]);
 
-  const copyText = (text) => {
+  const copyText = (text, hoverData) => {
+    setDisplayCopy(hoverData);
     navigator.clipboard.writeText(text);
+    setIsClicked(true);
+    setTimeout(() => {
+      setIsClicked(false);
+    }, 200);
   };
 
   const handleDelete = (id) => {
@@ -79,7 +414,9 @@ const CustomTable = () => {
         `Do you really want to delete ${rowToDelete[0].first_name}?`
       );
       if (confirmation) {
+        const orginalData = tableData.filter((data) => data.id !== id);
         const dataToDisplay = rowsToDisplay.filter((data) => data.id !== id);
+        setTableData(orginalData);
         setRowsToDisplay(dataToDisplay);
       }
     }
@@ -93,9 +430,9 @@ const CustomTable = () => {
     const { column, order } = sortObj;
     const sortedData =
       order === "asc"
-        ? rowsToDisplay.sort((a, b) => (a[column] > b[column] ? 1 : -1))
+        ? rowsToDisplay?.sort((a, b) => (a[column] > b[column] ? 1 : -1))
         : order === "desc"
-        ? rowsToDisplay.sort((a, b) => (a[column] < b[column] ? 1 : -1))
+        ? rowsToDisplay?.sort((a, b) => (a[column] < b[column] ? 1 : -1))
         : rowsToDisplay;
     setSort(sortObj);
     setRowsToDisplay(sortedData);
@@ -139,7 +476,6 @@ const CustomTable = () => {
           sortTable={sortTable}
         />
         <TBody
-          tableData={tableData ? tableData : []}
           columns={columns}
           handleSelectRow={handleSelectRow}
           showCopyIcon={showCopyIcon}
@@ -147,18 +483,23 @@ const CustomTable = () => {
           copyText={copyText}
           handleDelete={handleDelete}
           rowsToDisplay={rowsToDisplay}
+          isClicked={isClicked}
         />
-        {/* <TableFooter columns={columns ? columns : []} /> */}
+        {isFooterNeeded === true ? (
+          <TableFooter columns={columns ? columns : []} />
+        ) : null}
       </table>
-      <Pagination
-        currentPage={currentPage}
-        rowPerPage={rowPerPage}
-        tableRows={tableData.length}
-        setCurrentPage={setCurrentPage}
-        handlePrevClick={handlePrevClick}
-        handleNextClick={handleNextClick}
-        disabled={disabled}
-      />
+      {isFooterNeeded === false ? (
+        <Pagination
+          currentPage={currentPage}
+          rowPerPage={rowPerPage}
+          tableRows={tableData.length}
+          setCurrentPage={setCurrentPage}
+          handlePrevClick={handlePrevClick}
+          handleNextClick={handleNextClick}
+          disabled={disabled}
+        />
+      ) : null}
     </>
   );
 };

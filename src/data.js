@@ -250,3 +250,15 @@ export const data = [
     date_of_birth: "9/24/2022",
   },
 ];
+
+export const columnData = [
+  { id: 1, field: "id", header: "ID" },
+  { id: 2, field: "first_name", header: "First Name" },
+  { id: 3, field: "last_name", header: "Last Name" },
+  { id: 4, field: "email", header: "Email" },
+  { id: 5, field: "gender", header: "Gender" },
+  { id: 6, field: "address", header: "Address" },
+  { id: 7, field: "phone", header: "Phone No" },
+  { id: 9, field: "date_of_birth", header: "DOB" },
+  { id: 10, field: "delete", header: "Action" },
+];
