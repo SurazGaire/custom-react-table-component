@@ -376,10 +376,10 @@ const CustomTable = () => {
       : setIsFooterNeeded(false);
 
     if (searchChar === "") {
-      setRowsToDisplay(getSlicedData());
+      setTableData(getSlicedData());
       setIsFooterNeeded(false);
     } else {
-      setRowsToDisplay(filteredData);
+      setTableData(filteredData);
     }
   };
 
@@ -389,14 +389,19 @@ const CustomTable = () => {
   }, []);
 
   const getSlicedData = () => {
+    console.log(tableData);
     const lastPostIndex = currentPage * rowPerPage;
     const firstPostIndex = lastPostIndex - rowPerPage;
     let slicedData = tableData.slice(firstPostIndex, lastPostIndex);
+    console.log(slicedData, "sliced");
     return slicedData;
   };
+  console.log("out use");
+
   useEffect(() => {
+    console.log("in use");
     setRowsToDisplay(getSlicedData());
-  }, [currentPage]);
+  }, [currentPage, tableData]);
 
   const copyText = (text, hoverData) => {
     setDisplayCopy(hoverData);
@@ -415,9 +420,7 @@ const CustomTable = () => {
       );
       if (confirmation) {
         const orginalData = tableData.filter((data) => data.id !== id);
-        const dataToDisplay = rowsToDisplay.filter((data) => data.id !== id);
         setTableData(orginalData);
-        setRowsToDisplay(dataToDisplay);
       }
     }
   };
@@ -430,27 +433,28 @@ const CustomTable = () => {
     const { column, order } = sortObj;
     const sortedData =
       order === "asc"
-        ? rowsToDisplay?.sort((a, b) => (a[column] > b[column] ? 1 : -1))
+        ? [...tableData]?.sort((a, b) => (a[column] > b[column] ? 1 : -1))
         : order === "desc"
-        ? rowsToDisplay?.sort((a, b) => (a[column] < b[column] ? 1 : -1))
+        ? [...tableData]?.sort((a, b) => (a[column] < b[column] ? 1 : -1))
         : rowsToDisplay;
+    console.log(sortedData);
     setSort(sortObj);
-    setRowsToDisplay(sortedData);
+    setTableData(sortedData);
   };
 
   const handleSelectRow = (e) => {
     const { name, checked } = e.target;
     if (name === "selectAll") {
-      let checkedData = rowsToDisplay.map((data) => {
+      let checkedData = tableData.map((data) => {
         return { ...data, isChecked: checked };
       });
-      setRowsToDisplay(checkedData);
+      setTableData(checkedData);
       setIsAllChecked(!isAllChecked);
     } else {
-      let checkedData = rowsToDisplay.map((data) =>
+      let checkedData = tableData.map((data) =>
         data.id === Number(name) ? { ...data, isChecked: checked } : data
       );
-      setRowsToDisplay(checkedData);
+      setTableData(checkedData);
       if (checked === false) {
         setIsAllChecked(false);
       }
